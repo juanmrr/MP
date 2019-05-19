@@ -1,0 +1,36 @@
+#ifndef SIMULADOR_H
+#define SIMULADOR_H
+
+class Simulador{
+
+private:
+
+	ConjuntoParticulas fijas;
+	ConjuntoParticulas moviles;
+	int ancho, alto;
+
+	void Pintar_fijas ();
+	void Pintar_moviles ();
+
+public:
+
+	Simulador (ConjuntoParticulas p1, ConjuntoParticulas p2, int ancho, int alto);
+	~Simulador ();
+
+	void set_moviles (ConjuntoParticulas &p);
+	void set_fijas (ConjuntoParticulas &p);
+
+	ConjuntoParticulas get_fijas ();
+	ConjuntoParticulas get_moviles ();
+
+	void Pintar (int t);
+	void Step ();
+	void Rebotes ();
+        
+        void AgregaFija();
+        void AgregaMovil();
+        void Regenera();
+
+};
+
+#endif
