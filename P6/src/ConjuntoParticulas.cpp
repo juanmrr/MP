@@ -1,30 +1,27 @@
 #include "ConjuntoParticulas.h"
 #include <ctime>
+#include <assert.h>
+#include <math.h>
 
 void ConjuntoParticulas::Redimensiona (bool aumentar){
+    
+    int nuevo = capacidad + (aumentar?TAM_BLOQUE:-TAM_BLOQUE);
 
-	if (aumentar)
-            this->capacidad = this->capacidad + TAM_BLOQUE;
-	else
-            this->capacidad = this->capacidad - TAM_BLOQUE;
+    Particula * aux = new Particula [nuevo];
 
-        if (this->set != NULL){
-            Particula * aux = new Particula [this->get_capacidad()];
+    for (int i = 0; i < this->utiles; i++)
+        aux[i] = this->set[i];
 
-            for (int i = 0; i < this->utiles; i++)
-                    aux[i] = this->set[i];
-
-            delete [] this->set;
-
-            this->set = aux;
-            
-        }
+    delete [] this->set;
+    
+    this->set = aux;
+    this->capacidad= nuevo;
 
 }
 
 ConjuntoParticulas::ConjuntoParticulas (){
 
-	set = NULL;
+	set = 0;
 	capacidad = 0;
 	utiles = 0;
 
@@ -34,23 +31,26 @@ ConjuntoParticulas::ConjuntoParticulas (int capacidad){
 
 	this->capacidad = capacidad;
 	set = new Particula [capacidad];
-		
-	time_t t;
 
-	this->utiles = rand() % capacidad;
+	this->utiles = capacidad;
+        
+        for (int i = 0; i < this->utiles; i++){
+            Particula p;
+            this->set[i] = p;
+        }
 
 }			
 		
 ConjuntoParticulas::ConjuntoParticulas (const ConjuntoParticulas &c){
 
-	this->capacidad = c.get_capacidad();
-	this->utiles = c.get_utiles();
+    this->capacidad = c.get_capacidad();
+    this->utiles = c.get_utiles();
+        
+    this->set = new Particula [capacidad];
 	
-	set = new Particula [capacidad];
-	
-	for (int i = 0; i < utiles; i++)
-		this->set[i] = c.set[i];
-
+    for (int i = 0; i < this->get_utiles(); i++)
+        this->set[i] = c.set[i];
+        
 }
 
 ConjuntoParticulas::~ConjuntoParticulas (){
@@ -88,6 +88,8 @@ void ConjuntoParticulas::AgregaParticula (Particula p){
 }
 
 void ConjuntoParticulas::BorraParticula (int posicion){
+    
+    assert (posicion < this->get_utiles());
 
     	this->utiles = this->get_utiles() - 1;
     
@@ -99,14 +101,18 @@ void ConjuntoParticulas::BorraParticula (int posicion){
 
 }
 		
-Particula ConjuntoParticulas::ObtieneParticula (int &posicion) const{
+Particula ConjuntoParticulas::ObtieneParticula (int posicion) const{
+    
+    assert (posicion < this->get_utiles());
 
 	return this->set[posicion];
 
 }
 
-void ConjuntoParticulas::ReemplazaParticula (int &posicion, Particula &p){
+void ConjuntoParticulas::ReemplazaParticula (int &posicion, Particula p){
 
+    assert (posicion < this->get_utiles());
+    
 	this->set[posicion] = p;
 
 }
@@ -119,39 +125,61 @@ void ConjuntoParticulas::Mover (int &ancho, int &alto){
 }
 
 void ConjuntoParticulas::GestionarColisiones (){
+    
+    while (utiles > MAX_MOVILES)
+        BorraParticula(0);
+    
+    for (int i = 0; i < this->utiles; i++)
+        for (int j = i + 1; j < this->utiles; j++)
+            if (set[i].get_color() == set[j].get_color() && set[i].colision(set[j]))
+                BorraParticula(j);
+            else
+                this->set[i].Rebota(set[j]);
 
-	for (int i = 0; i < utiles; i++)
-		for (int j = i + 1; j < utiles; j++)
-                    if (set[i].get_color() == set[j].get_color())
-                        BorraParticula(j);
-                    else
-                        this->set[i].Rebota(set[j]);
+}
 
+void ConjuntoParticulas::Swap(ConjuntoParticulas &c){
+    
+    int aux_capacidad = this->capacidad;
+    this->capacidad = c.get_capacidad();
+    c.capacidad = aux_capacidad;
+    
+    int aux_utiles = this->utiles;
+    this->utiles = c.get_utiles();
+    c.utiles = aux_utiles;
+    
+    Particula * aux_set = this->set;
+    this->set = c.set;
+    c.set = aux_set;
+    
 }
 
 ConjuntoParticulas& ConjuntoParticulas::operator= (const ConjuntoParticulas &c){
     
-    if (this != &c){
-        delete [] this->set;
-        ConjuntoParticulas(c);
-    }
+    ConjuntoParticulas aux (c);
     
+    aux.Swap(*this);
+                
     return *this;
     
 }
 
 ConjuntoParticulas ConjuntoParticulas::operator+ (const ConjuntoParticulas &p) const{
     
-    ConjuntoParticulas aux(this->get_capacidad() + p.get_capacidad());
+    ConjuntoParticulas aux(this->get_utiles() + p.get_utiles());
+    
+    int posicion = 0;
     
     for (int i = 0; i < this->get_utiles(); i++){
-        aux.AgregaParticula(this->ObtieneParticula(i));
+        aux.ReemplazaParticula(posicion, this->set[i]);
+        posicion++;
     }
     
     for (int i = 0; i < p.get_utiles(); i++){
-        aux.AgregaParticula(p.ObtieneParticula(i));
+        aux.ReemplazaParticula(posicion, p.set[i]);
+        posicion++;
     }
-    
+
     return aux;
     
 }

@@ -20,8 +20,8 @@ public:
 	void set_moviles (ConjuntoParticulas &p);
 	void set_fijas (ConjuntoParticulas &p);
 
-	ConjuntoParticulas get_fijas ();
-	ConjuntoParticulas get_moviles ();
+	ConjuntoParticulas get_fijas () const;
+	ConjuntoParticulas get_moviles () const;
 
 	void Pintar (int t);
 	void Step ();

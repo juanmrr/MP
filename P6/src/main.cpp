@@ -20,9 +20,20 @@ void pintaNube(const ConjuntoParticulas & miConjunto) {
 
 }
 
+void pintaNube2(const ConjuntoParticulas & miConjunto) {
+    int N = miConjunto.get_utiles();
+    Particula p;
+    for (int i = 0; i < N; i++) {
+        p = miConjunto.ObtieneParticula(i);
+        color(p.get_color());
+        rectangulo_lleno(p.get_x() - ANCHO_RECTANGULO, p.get_y() - ALTO_RECTANGULO, p.get_x() + ANCHO_RECTANGULO, p.get_y() + ALTO_RECTANGULO);
+    }
+
+}
+
 ostream& operator<< (ostream &flujo, Particula &p){
     
-    flujo << "posX: " << p.get_x() << " posY: " << p.get_y();
+    flujo << "posX: " << p.get_x() << " posY: " << p.get_y() << " color: " << p.get_color();
     
     return flujo;
     
@@ -65,7 +76,7 @@ int main() {
             x.Mover(ancho, alto);
             a1.AgregaParticula(x);
             cout << a1 << endl;
-
+            
             b1.Mover(ancho, alto);
             a1 = a1 + b1;
             cout << a1 << endl;
@@ -88,7 +99,6 @@ int main() {
             ConjuntoParticulas verdes(NRO);
             ConjuntoParticulas blancas;
             Particula p;
-
 
             for (int i = 0; i < NRO; i++) {
                 p = rojas.ObtieneParticula(i);
@@ -129,15 +139,26 @@ int main() {
 
         case 3:
         {
-            cout << "\n**************  Probando Simulador ****************\n";
+            cout << "\n************** Probando Simulador ****************\n";
             ConjuntoParticulas base(30);
             ConjuntoParticulas otro(10);
             ConjuntoParticulas aux;
             int contador = 0;
 
             Simulador game(base, otro, ancho, alto);
-
-            while (contador < 500) {
+ 
+            while (contador < 500){
+                switch (tecla()){
+                    case ESCAPE:
+                        game.Regenera();
+                        break;
+                    case F1:
+                        game.AgregaFija();
+                        break;
+                    case F2:
+                        game.AgregaMovil();
+                        break;
+                }
                 game.Step();
                 game.Pintar(30);
                 contador++;

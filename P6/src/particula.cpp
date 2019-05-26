@@ -10,7 +10,7 @@ Particula::Particula(){
 	this->dx = velocidad;
 	this->dy = velocidad;
 
-	this->c = static_cast <Color>(rand() % 8);
+	this->c = static_cast <Color>((rand() % 8) + 1);
 
 }
 
@@ -90,7 +90,7 @@ bool Particula::colision (const Particula &p){
 
 void Particula::Mover(int alto, int ancho) {
 
-   const float factor = 0.95;
+   const float factor = 0.85;
    this->set_x(this->get_dx() + this->get_x());
    this->set_y(this->get_dy() + this->get_y());
    if (this->get_x() > ancho - RADIO) {
@@ -116,7 +116,7 @@ void Particula::Mover(int alto, int ancho) {
   // P.dy += 0.1;
 }
 
-void Particula::Rebota (Particula otra) {
+void Particula::Rebota (Particula &otra) {
 
 	if (this->colision(otra)){
             this->dx = -this->dx;

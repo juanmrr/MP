@@ -1,22 +1,17 @@
 #include "ConjuntoParticulas.h"
 #include "miniwin.h"
 #include "definiciones.h"
+#include "simulador.h"
 
-Simulador::Simulador (ConjuntoParticulas p1, ConjuntoParticulas p2, int ancho, int alto){
+Simulador::Simulador (ConjuntoParticulas p1, ConjuntoParticulas p2, int ancho, int alto) : fijas(p1), moviles(p2), ancho(ancho), alto(alto) {
 
-	fijas = p1;
-	moviles = p2;
-	this->ancho = ancho;
-	this->alto = alto;
+    vredimensiona (ancho, alto);
 
-	vredimensiona(ancho, alto);
 }
 
 Simulador::~Simulador(){
 
-	vcierra();
-	fijas.~ConjuntoParticulas();
-        moviles.~ConjuntoParticulas();
+    vcierra();
 
 }
 
@@ -32,13 +27,13 @@ void Simulador::set_moviles (ConjuntoParticulas &p){
 
 }
 
-ConjuntoParticulas Simulador::get_fijas (){
+ConjuntoParticulas Simulador::get_fijas () const{
 
 	return this->fijas;
 
 }
 
-ConjuntoParticulas Simulador::get_moviles (){
+ConjuntoParticulas Simulador::get_moviles () const{
 
 	return this->moviles;
 
@@ -52,7 +47,7 @@ void Simulador::Pintar_fijas (){
     	for (int i = 0; i < N; i++) {
         	p = this->fijas.ObtieneParticula(i);
         	color(p.get_color());
-        	rectangulo_lleno(p.get_x() - ANCHO_RECTANGULO, p.get_y() + ALTO_RECTANGULO, p.get_x() + ANCHO_RECTANGULO, p.get_y() - ALTO_RECTANGULO);
+        	rectangulo_lleno(p.get_x() - ANCHO_RECTANGULO, p.get_y() - ALTO_RECTANGULO, p.get_x() + ANCHO_RECTANGULO, p.get_y()+ ALTO_RECTANGULO);
    	 }
 }
 
@@ -69,33 +64,48 @@ void Simulador::Pintar_moviles (){
 }
 	
 void Simulador::Pintar (int t){
+    
+    borra();
+    Pintar_fijas();
+    Pintar_moviles();
 
-	Pintar_moviles();
-	Pintar_fijas();
-
-	refresca();
-	espera(t);
+    refresca();
+    espera(t);
 
 }
 
 void Simulador::Rebotes (){
+    
+    Particula m, f;
+    bool rebotado;
 
-	for (int i = 0; i < this->fijas.get_utiles(); i++)
-		for (int j = i + 1; j < this->moviles.get_utiles(); j++)
-                    this->fijas.ObtieneParticula(i).Rebota(moviles.ObtieneParticula(j));
+	for (int i = 0; i < this->moviles.get_utiles(); i++){
+            rebotado = false;
+            m = moviles.ObtieneParticula(i);
+            for (int j = 0; j < this->fijas.get_utiles() && !rebotado; j++){
+                f = fijas.ObtieneParticula(j);
+                rebotado = f.colision(m);
+                if (rebotado){
+                    f.Rebota(m);
+                    if (m.get_color() == f.get_color()){
+                        Particula p(m);
+                        p.set_x(fmod(rand(), MIN_X));
+                        p.set_y(fmod(rand(), MIN_Y));
+                        this->moviles.AgregaParticula(p);
+                    }else
+                        this->moviles.BorraParticula(i);
+                }
+            }
+        }
 
 }
 
 void Simulador::Step (){
 
-	int N = this->moviles.get_utiles();
+        this->moviles.Mover(ancho, alto);
+	this->moviles.GestionarColisiones();
 
-	for (int i = 0; i < N; i++){
-		this->moviles.Mover(ancho, alto);
-		this->moviles.GestionarColisiones();
-	}
-
-	Rebotes();
+	//Rebotes();
 
 }
 
@@ -121,9 +131,6 @@ void Simulador::Regenera(){
     
     capacidadFija = this->fijas.get_capacidad();
     capacidadMovil = this->moviles.get_capacidad();
-    
-    this->fijas.~ConjuntoParticulas();
-    this->moviles.~ConjuntoParticulas();
     
     this->fijas = ConjuntoParticulas(capacidadFija);
     this->moviles = ConjuntoParticulas(capacidadMovil);

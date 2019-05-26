@@ -39,7 +39,7 @@ public:
 	float distancia (const Particula &p);
 	bool colision (const Particula &p);
 	void Mover (int alto, int ancho);
-	void Rebota (Particula otra);
+	void Rebota (Particula &otra);
 
 };
 
