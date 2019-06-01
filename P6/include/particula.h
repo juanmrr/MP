@@ -8,8 +8,6 @@
 
 using namespace miniwin;
 
-const int RADIO = 10;
-
 class Particula {
 
 private: 

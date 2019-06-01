@@ -74,6 +74,39 @@ void Simulador::Pintar (int t){
 
 }
 
+void Simulador::Rebotes_colores (){
+    
+    Particula m, f;
+    bool rebotado;
+    int nro_moviles_inicial = this->moviles.get_utiles();
+    int i = 0;
+
+	while(i < this->moviles.get_utiles() && i < nro_moviles_inicial){
+            rebotado = false;
+            m = moviles.ObtieneParticula(i);
+            for (int j = 0; j < this->fijas.get_utiles() && !rebotado; j++){
+                f = fijas.ObtieneParticula(j);
+                rebotado = f.colision(m);
+                if (rebotado){
+                    m.set_dx(-m.get_dx());
+                    m.set_dy(-m.get_dy());
+                    this->moviles.ReemplazaParticula(i, m);
+                    if (m.get_color() == f.get_color()){
+                        Particula p(m);
+                        p.set_x(fmod(rand(), MIN_X));
+                        p.set_y(fmod(rand(), MIN_Y));
+                        this->moviles.AgregaParticula(p);
+                        i++;
+                    }else
+                        this->moviles.BorraParticula(i);
+                }
+            }
+            if(!rebotado)
+                i++;
+        }
+
+}
+
 void Simulador::Rebotes (){
     
     Particula m, f;
@@ -86,26 +119,31 @@ void Simulador::Rebotes (){
                 f = fijas.ObtieneParticula(j);
                 rebotado = f.colision(m);
                 if (rebotado){
-                    f.Rebota(m);
-                    if (m.get_color() == f.get_color()){
-                        Particula p(m);
-                        p.set_x(fmod(rand(), MIN_X));
-                        p.set_y(fmod(rand(), MIN_Y));
-                        this->moviles.AgregaParticula(p);
-                    }else
-                        this->moviles.BorraParticula(i);
+                    m.set_dx(-m.get_dx());
+                    m.set_dy(-m.get_dy());
+                    this->moviles.ReemplazaParticula(i, m);
                 }
             }
         }
-
+    
 }
+
 
 void Simulador::Step (){
 
         this->moviles.Mover(ancho, alto);
 	this->moviles.GestionarColisiones();
 
-	//Rebotes();
+	Rebotes();
+
+}
+
+void Simulador::Step_colores (){
+
+        this->moviles.Mover(ancho, alto);
+	this->moviles.GestionarColisiones();
+
+	Rebotes_colores();
 
 }
 
@@ -127,12 +165,12 @@ void Simulador::AgregaMovil(){
 
 void Simulador::Regenera(){
     
-    int capacidadFija, capacidadMovil;
+    int utilesFija, utilesMovil;
     
-    capacidadFija = this->fijas.get_capacidad();
-    capacidadMovil = this->moviles.get_capacidad();
+    utilesFija = this->fijas.get_utiles();
+    utilesMovil = this->moviles.get_utiles();
     
-    this->fijas = ConjuntoParticulas(capacidadFija);
-    this->moviles = ConjuntoParticulas(capacidadMovil);
+    this->fijas = ConjuntoParticulas(utilesFija);
+    this->moviles = ConjuntoParticulas(utilesMovil);
     
 }

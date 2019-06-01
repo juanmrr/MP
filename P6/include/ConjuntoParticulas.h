@@ -32,7 +32,7 @@ public:
 	void AgregaParticula (Particula p);
 	void BorraParticula (int posicion);
 	Particula ObtieneParticula (int posicion) const;
-	void ReemplazaParticula (int &posicion, Particula p);
+	void ReemplazaParticula (int posicion, Particula &p);
 	void Mover (int &ancho, int &alto);
 	void GestionarColisiones ();
         

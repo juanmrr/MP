@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="100">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <logicalFolder name="HeaderFiles"
+                   displayName="Header Files"
+                   projectFiles="true">
+      <itemPath>include/ConjuntoParticulas.h</itemPath>
+      <itemPath>include/definiciones.h</itemPath>
+      <itemPath>include/miniwin.h</itemPath>
+      <itemPath>include/particula.h</itemPath>
+      <itemPath>include/simulador.h</itemPath>
+    </logicalFolder>
+    <logicalFolder name="ResourceFiles"
+                   displayName="Resource Files"
+                   projectFiles="true">
+    </logicalFolder>
+    <logicalFolder name="SourceFiles"
+                   displayName="Source Files"
+                   projectFiles="true">
+      <itemPath>src/ConjuntoParticulas.cpp</itemPath>
+      <itemPath>src/main.cpp</itemPath>
+      <itemPath>src/miniwin.cpp</itemPath>
+      <itemPath>src/particula.cpp</itemPath>
+      <itemPath>src/simulador.cpp</itemPath>
+    </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Test Files"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Debug" type="1">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <compileType>
+        <cTool>
+          <standard>10</standard>
+          <incFile>
+            <pElem>definiciones.h</pElem>
+            <pElem>miniwin.h</pElem>
+            <pElem>ConjuntoParticulas.h</pElem>
+            <pElem>particula.h</pElem>
+          </incFile>
+        </cTool>
+        <ccTool>
+          <standard>11</standard>
+          <incDir>
+            <pElem>.</pElem>
+            <pElem>include</pElem>
+          </incDir>
+        </ccTool>
+        <linkerTool>
+          <commandLine>-pthread -lX11</commandLine>
+        </linkerTool>
+      </compileType>
+      <folder path="HeaderFiles">
+        <ccTool>
+          <incDir>
+            <pElem>include</pElem>
+          </incDir>
+        </ccTool>
+      </folder>
+      <folder path="SourceFiles">
+        <ccTool>
+          <incDir>
+            <pElem>src</pElem>
+          </incDir>
+        </ccTool>
+      </folder>
+      <item path="include/ConjuntoParticulas.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/definiciones.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/miniwin.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/particula.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/simulador.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/ConjuntoParticulas.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/miniwin.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/particula.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/simulador.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+    </conf>
+    <conf name="Release" type="1">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <compileType>
+        <cTool>
+          <developmentMode>5</developmentMode>
+        </cTool>
+        <ccTool>
+          <developmentMode>5</developmentMode>
+          <standard>11</standard>
+        </ccTool>
+        <fortranCompilerTool>
+          <developmentMode>5</developmentMode>
+        </fortranCompilerTool>
+        <asmTool>
+          <developmentMode>5</developmentMode>
+        </asmTool>
+      </compileType>
+      <item path="include/ConjuntoParticulas.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/definiciones.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/miniwin.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/particula.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/simulador.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/ConjuntoParticulas.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/miniwin.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/particula.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/simulador.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+    </conf>
+  </confs>
+</configurationDescriptor>

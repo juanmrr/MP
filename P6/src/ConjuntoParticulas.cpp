@@ -109,7 +109,7 @@ Particula ConjuntoParticulas::ObtieneParticula (int posicion) const{
 
 }
 
-void ConjuntoParticulas::ReemplazaParticula (int &posicion, Particula p){
+void ConjuntoParticulas::ReemplazaParticula (int posicion, Particula &p){
 
     assert (posicion < this->get_utiles());
     
@@ -128,14 +128,25 @@ void ConjuntoParticulas::GestionarColisiones (){
     
     while (utiles > MAX_MOVILES)
         BorraParticula(0);
+     
+    int i = 0;
+    bool colision;
     
-    for (int i = 0; i < this->utiles; i++)
-        for (int j = i + 1; j < this->utiles; j++)
-            if (set[i].get_color() == set[j].get_color() && set[i].colision(set[j]))
-                BorraParticula(j);
-            else
+    while (i < this->utiles - 1){
+        colision = false;
+        for (int j = i + 1; j < this->utiles && !colision; j++){
+            colision = set[i].colision(set[j]);
+            if (set[i].get_color() == set[j].get_color() && colision)
+                BorraParticula(i);
+            else if (colision){
                 this->set[i].Rebota(set[j]);
-
+                i++;
+            }
+        }
+        if (!colision)
+            i++;
+    }
+    
 }
 
 void ConjuntoParticulas::Swap(ConjuntoParticulas &c){

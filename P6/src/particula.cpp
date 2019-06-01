@@ -25,11 +25,11 @@ Particula::Particula(float x, float y){
 }
 
 float Particula::get_x() const{
-	return x;
+	return this->x;
 }
 
 float Particula::get_y() const{
-	return y;
+	return this->y;
 }
 
 float Particula::get_dx() const{
@@ -67,9 +67,9 @@ void Particula::set_color (Color c){
 float Particula::distancia (const Particula &p){
 
 	float distancia;
-
-	distancia = sqrt(pow(this->x - p.get_x(), 2) + pow(this->y - p.get_y(), 2));
-
+       
+	distancia = sqrt(((x - p.get_x()) * (x - p.get_x())) + ((y - p.get_y()) * (y - p.get_y())));
+        
 	return distancia;
 
 }
@@ -83,7 +83,7 @@ bool Particula::colision (const Particula &p){
 
 	if (dist <= UMBRAL)
 		colision = true;
-
+ 
 	return colision;
 
 }
@@ -119,9 +119,9 @@ void Particula::Mover(int alto, int ancho) {
 void Particula::Rebota (Particula &otra) {
 
 	if (this->colision(otra)){
-            this->dx = -this->dx;
-            this->dy = -this->dy;
-            otra.set_dx(-otra.get_dx());
-            otra.set_dy(-otra.get_dy());
+            this->dx = -otra.get_dx();
+            this->dy = -otra.get_dy();
+            otra.set_dx(-this->dx);
+            otra.set_dy(-this->dy);
 	}
 }

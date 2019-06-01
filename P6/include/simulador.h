@@ -26,6 +26,8 @@ public:
 	void Pintar (int t);
 	void Step ();
 	void Rebotes ();
+        void Step_colores ();
+	void Rebotes_colores ();
         
         void AgregaFija();
         void AgregaMovil();

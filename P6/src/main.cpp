@@ -20,17 +20,6 @@ void pintaNube(const ConjuntoParticulas & miConjunto) {
 
 }
 
-void pintaNube2(const ConjuntoParticulas & miConjunto) {
-    int N = miConjunto.get_utiles();
-    Particula p;
-    for (int i = 0; i < N; i++) {
-        p = miConjunto.ObtieneParticula(i);
-        color(p.get_color());
-        rectangulo_lleno(p.get_x() - ANCHO_RECTANGULO, p.get_y() - ALTO_RECTANGULO, p.get_x() + ANCHO_RECTANGULO, p.get_y() + ALTO_RECTANGULO);
-    }
-
-}
-
 ostream& operator<< (ostream &flujo, Particula &p){
     
     flujo << "posX: " << p.get_x() << " posY: " << p.get_y() << " color: " << p.get_color();
@@ -142,26 +131,53 @@ int main() {
             cout << "\n************** Probando Simulador ****************\n";
             ConjuntoParticulas base(30);
             ConjuntoParticulas otro(10);
-            ConjuntoParticulas aux;
-            int contador = 0;
+            int tecla_pulsada = tecla();
 
             Simulador game(base, otro, ancho, alto);
  
-            while (contador < 500){
-                switch (tecla()){
-                    case ESCAPE:
-                        game.Regenera();
-                        break;
+            while (tecla_pulsada != ESCAPE){
+                tecla_pulsada = tecla();
+                switch (tecla_pulsada){
                     case F1:
                         game.AgregaFija();
                         break;
                     case F2:
                         game.AgregaMovil();
                         break;
+                    case F3:
+                        game.Regenera();
+                        break;
                 }
                 game.Step();
                 game.Pintar(30);
-                contador++;
+            }
+            break;
+        }
+        
+        case 4:
+        {
+            cout << "\n************** Probando Simulador modificado ****************\n";
+            ConjuntoParticulas base(30);
+            ConjuntoParticulas otro(10);
+            int tecla_pulsada = tecla();
+
+            Simulador game(base, otro, ancho, alto);
+ 
+            while (tecla_pulsada != ESCAPE){
+                tecla_pulsada = tecla();
+                switch (tecla_pulsada){
+                    case F1:
+                        game.AgregaFija();
+                        break;
+                    case F2:
+                        game.AgregaMovil();
+                        break;
+                    case F3:
+                        game.Regenera();
+                        break;
+                }
+                game.Step_colores();
+                game.Pintar(30);
             }
             break;
         }
